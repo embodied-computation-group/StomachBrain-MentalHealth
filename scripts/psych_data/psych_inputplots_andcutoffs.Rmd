@@ -1,0 +1,213 @@
+---
+title: "Psych input plots: circular histograms & stacked bar. & Psych cutoff percentages"
+output: html_notebook
+---
+
+# Load psych data (cca input)
+```{r}
+rm(list = ls())
+library(circlize)
+library(R.matlab)
+library(dplyr)
+library(stringr)
+
+filepath = '~/Documents/StomachBrain/CCA/data/CCA_input/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat'
+data<- readMat(filepath)
+data$y <- data$Y.nooutliers # select psych scores only
+data <- data[c('y')]
+
+data$factor <- c('Autism', 'ADHD.A', 'ADHD.B', 'Empathy.Fantasy', 'Empathy.Concern', 'Empathy.Perspective', 'Empathy.Distress', 'Insomnia', 'Intero.Notice', 'Intero.Not.Distract', 'Intero.Not.Worry', 'Intero.Attention.Regulation', 'Intero.Emotion.Aware', 'Intero.Self.Regulate', 'Intero.Body.Listen', 'Intero.Trusting' , 'Depression.B', 'Physical.Fatigue', 'General.Fatigue', 'Reduced.Active', 'Reduced.Motivation', 'Mental.Fatigue', 'Support.Sig.Other', 'Support.Family', 'Support.Friend', 'Depression.A', 'Somatic.Symptoms', 'Stress', 'Social.Anxiety', 'Anxiety.Trait', 'Well-Being', 'Ment.Well-Being', 'Quality.Life.General', 'Quality.Life.Physical', 'Quality.Life.Psychological', 'Quality.Life.Social', 'Quality.Life.Environment')
+
+```
+
+
+# Make summary scores for figure
+```{r}
+
+# Make summary scores for descriptive histogram
+data$y_summary <- data$y[, data$factor == 'Autism'] 
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('ADHD.A', 'ADHD.B')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Empathy.Fantasy', 'Empathy.Concern', 'Empathy.Perspective', 'Empathy.Distress')]))
+data$y_summary <- cbind(data$y_summary, data$y[, data$factor %in% c('Insomnia')])
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Intero.Notice', 'Intero.Not.Distract', 'Intero.Not.Worry', 'Intero.Attention.Regulation', 'Intero.Emotion.Aware', 'Intero.Self.Regulate', 'Intero.Body.Listen', 'Intero.Trusting')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Depression.B', 'Depression.A')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Physical.Fatigue', 'General.Fatigue', 'Reduced.Active', 'Reduced.Motivation', 'Mental.Fatigue')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Support.Sig.Other', 'Support.Family', 'Support.Friend')]))
+data$y_summary <- cbind(data$y_summary, data$y[, data$factor %in% c('Somatic.Symptoms')])
+data$y_summary <- cbind(data$y_summary, data$y[, data$factor %in% c('Stress')])
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Social.Anxiety', 'Anxiety.Trait')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Well-Being', 'Ment.Well-Being')]))
+data$y_summary <- cbind(data$y_summary, rowMeans(data$y[, data$factor %in% c('Quality.Life.General', 'Quality.Life.Physical', 'Quality.Life.Psychological', 'Quality.Life.Social', 'Quality.Life.Environment')]))
+
+data$factor_summary <- c('Autism', 'ADHD', 'Empathy', 'Insomnia', 'Interoception', 'Depression', 'Fatigue', 'Social.Support', 'Somatic.Symps', 'Stress','Anxiety', 'Well-Being', 'Quality.of.Life')
+
+# normalise so histograms chunks are equal size
+data$y_summary <- apply(data$y_summary, 2, scale)
+
+# put in long format for circulize
+data$y_long <- c(data$y_summary)
+data$factor_long <- rep(data$factor_summary, each = nrow(data$y_summary))
+
+
+```
+
+
+# Circular histagram plot
+```{r}
+
+# Set up the PNG device to save the image
+png("~/Documents/StomachBrain/CCA/figures/gastricPLV_PsychScoresSubscales/CCA_input_figs/circos_psych_input_summary.png", width = 1600, height = 1600)  # 
+
+circos.clear()
+
+circos.initialize(factors = data$factor_long, x = data$y_long)
+
+hist_colors <- c("#CC0000", "brown1", "indianred1", "coral", "khaki1", "seagreen2", "aquamarine", "cadetblue1", "skyblue1", "slateblue1", "mediumpurple1", "plum1", "#FF3399") #, "palegreen1"
+
+
+circos.par("track.height" = 0.2)
+circos.trackPlotRegion(factors = data$factor_long, y = data$y_long, bg.lwd = 3, bg.col = hist_colors, panel.fun = function(x, y) {
+    circos.axis(
+        h = "bottom",
+        major.tick = TRUE,
+        labels.cex = 3,
+        direction = "outside",
+        #lwd = 2 
+    )
+})
+
+circos.par("track.height" = 0.5)
+#max_abs_y <- max(abs(data$y_long))
+circos.trackHist(data$factor_long, data$y_long, bg.col = "white", col = hist_colors, lwd = 3, bg.lwd = 2) 
+
+# Adding text to the center
+#text(0,0,"Psychiatric\nFingerprint", font = 2, cex = 1)
+
+dev.off()
+```
+
+
+# make accompanying stacked bar for subscales
+```{r}
+# Load necessary libraries
+library(ggplot2)
+
+# Define the categories for ADHD and Empathy
+all_categories <- list(
+  ADHD = c('ADHD A', 'ADHD B'),
+  Anxiety = c('Social Anxiety', 'Trait Anxiety'),
+  Autism = c('Autism'),
+  Depression = c('Depression A', 'Depression B'),
+  Empathy = c('Fantasy', 'Concern', 'Perspective', 'Distress'),
+  Fatigue = c('Physically', 'General', 'Less Active', 'Less Motivation', 'Mental'),
+  Insomnia = c('Insomnia'),
+  Interoception = c('Notice', 'Distract', 'Worry', 'Atten Reg', 'Emotion', 'Self Reg', 'Listen', 'Trusting'),
+  Quality.of.Life = c('Overall', 'Physical', 'Psychological', 'Social', 'Environment'),
+  Social.Support = c('Significant Other', 'Family', 'Friend'),
+  Somatic.Symps = c('Somatic Symptoms'),
+  Stress = c('Stress'),
+  Well.Being = c('General Well-Being', 'Mental Well-Being')
+)
+
+# Combine all categories into a single list
+#all_categories <- c(autism_cats, adhd_cats, empathy_cats, insomnia_cats, intero_cats, depress_cats, fatigue_cats, support_cats, somatic_cats, stress_cats, anxiety_cats, wellbeing_cats, quallife_cats)
+
+
+# Create a list of data frames where each entry in category_data_list contains data for plotting
+category_data_list <- lapply(names(all_categories), function(name) {
+  data.frame(
+    variable = unlist(all_categories[[name]]),
+    category = name
+  )
+})
+
+# Combine data frames into a single data frame
+category_data <- do.call(rbind, category_data_list)
+
+# factor to keep order of bars  
+category_data$category <- factor(category_data$category, levels = unique(category_data$category))
+
+# outline colours
+outline_colors <- c("brown4", "brown4", "brown3", "brown3", "indianred3", "coral2","coral2", "khaki3", "khaki3", "khaki3", "khaki3","seagreen4", "seagreen4", "seagreen4", "seagreen4", "seagreen4", "aquamarine3", "cadetblue3", "cadetblue3", "cadetblue3", "cadetblue3","cadetblue3", "cadetblue3","cadetblue3", "cadetblue3", "skyblue3", "skyblue3","skyblue3", "skyblue3", "skyblue3", "slateblue3", "slateblue3", "slateblue3", "mediumpurple3", "plum3", "violetred4", "violetred4")
+
+# fill colours
+custom_fill_colors <- c('Autism' ="indianred1", 'ADHD A'="#CC0000", 'ADHD B'="#CC0000", 'Fantasy'="khaki1", 'Concern'="khaki1", 'Perspective'="khaki1", 'Distress'="khaki1", 'Insomnia'="aquamarine", 'Notice'="cadetblue1", 'Distract'="cadetblue1", 'Worry'="cadetblue1", 'Atten Reg'="cadetblue1", 'Emotion'="cadetblue1", 'Self Reg'="cadetblue1", 'Listen'="cadetblue1",  'Trusting'="cadetblue1", 'Depression B'="coral", 'Depression A'="coral", 'Physically'="seagreen2", 'General'="seagreen2", 'Less Active'="seagreen2", 'Less Motivation'="seagreen2", 'Mental'="seagreen2", 'Significant Other'="slateblue1", 'Family'="slateblue1", 'Friend'="slateblue1", 'Somatic Symptoms' = "mediumpurple1", 'Stress' = "plum1", 'Social Anxiety'="brown1", 'Trait Anxiety' ="brown1", 'General Well-Being'="#FF3399", 'Mental Well-Being'="#FF3399", 'Overall'="skyblue1", 'Physical'="skyblue1", 'Psychological'="skyblue1", 'Social'="skyblue1", 'Environment'="skyblue1")
+
+
+
+p <- ggplot(category_data, aes(x = category, fill = variable)) +
+  geom_bar(position = "fill", color = outline_colors, size = 0.75, width = 0.9) +
+  geom_text(
+    aes(label = variable), 
+    stat = "count",
+    position = position_fill(vjust = 0.5),
+    size = 5,
+    color = "black",
+    fontface = 'bold' 
+  ) +
+  scale_fill_manual(values = custom_fill_colors) +
+  labs(x = "Psych Variables", y = "Proportion") +  # Adjusted the syntax (removed an extra +)
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, face = 'bold', size = 12),  # Making x-axis text bold and larger
+    axis.text.y = element_text(face = 'bold', size = 12),  # Making y-axis (left) text bold and larger
+    axis.title = element_text(size = 14, face = 'bold'),  # Making x and y-axis labels larger
+    legend.position = "none",
+    #axis.line = element_line(size = 1.5),  # Increasing the width of axis lines
+    #axis.ticks = element_line(size = 1.5)  
+  ) +
+  coord_flip() +
+  theme(
+    aspect.ratio = 0.5  # Adjust aspect ratio for width
+  )
+
+# Save the plot as a PNG file
+ggsave(
+  "~/Documents/StomachBrain/CCA/figures/gastricPLV_PsychScoresSubscales/CCA_input_figs/psych_subscales.png",
+  plot = p,
+  width = 10,
+  height = 6,
+  units = "in",
+  dpi = 300,
+  bg = "white"
+)
+
+```
+
+# check how many subjects cross diagnostic thresholds for each survey
+```{r}
+
+# load grand summary score tsv
+psych <- read.table('~/Documents/StomachBrain/CCA/data/grand_surveyscores_summary.tsv', header = TRUE, sep = "\t")
+subIDs = readMat('~/Documents/StomachBrain/CCA/data/CCA_input/subIDs_CCA_PsychScoresSubscales.mat')$subIDs
+
+# select subjects in CCA
+psych <- psych %>% filter(as.numeric(str_sub(participant_id, -4)) %in% subIDs[, 1])
+
+cutoffs <- c("aq10_cutoff", "asrs_a_cutoff", "isi_cutoff",  "mdi_cutoff", "phq9_cutoff", "phq15_cutoff", "pss_cutoff", "sias_cutoff", "stai_trait_cutoff44", "stai_trait_cutoff_cat", "who_cutoff")
+
+survey_cutoffs <- psych[, cutoffs] # select survey cutoff cols  - # colSums(is.na(survey_cutoffs))
+
+print(sprintf('Autism diagnosis (aq10) = %f percent', (sum(as.numeric(survey_cutoffs[, 'aq10_cutoff']))/nrow(psych)) * 100))
+print(sprintf('ADHD diagnosis (asrs) = %f percent', (sum(as.numeric(survey_cutoffs[, 'asrs_a_cutoff']))/nrow(psych)) * 100))  
+## print(sprintf('ADHD diagnosis (asrs) = %f percent', (sum(as.numeric(survey_cutoffs[, 'asrs_a_cutoff']), na.rm = TRUE)/sum(!is.na(survey_cutoffs[, 'asrs_a_cutoff']))) * 100))
+print(sprintf('Insomnia diagnosis - clinical moderate diagnosis (isi) = %f percent', (table(survey_cutoffs[, 'isi_cutoff'])[1]/nrow(psych)) * 100))
+print(sprintf('Insomnia diagnosis - subthreshold diagnosis (isi) = %f percent', (table(survey_cutoffs[, 'isi_cutoff'])[3]/nrow(psych)) * 100))
+print(sprintf('Depression diagnosis - moderate diagnosis (mdi) = %f percent', (table(survey_cutoffs[, 'mdi_cutoff'])[2]/nrow(psych)) * 100))
+print(sprintf('Depression diagnosis - mild diagnosis (mdi) = %f percent', (table(survey_cutoffs[, 'mdi_cutoff'])[1]/nrow(psych)) * 100))
+print(sprintf('Depression diagnosis - moderate diagnosis (phq9) = %f percent', (table(survey_cutoffs[, 'phq9_cutoff'])[2]/nrow(psych)) * 100))
+print(sprintf('Depression diagnosis - mild diagnosis (phq9) = %f percent', (table(survey_cutoffs[, 'phq9_cutoff'])[1]/nrow(psych)) * 100))
+print(sprintf('Somatic Symptoms diagnosis - high diagnosis (phq15) = %f percent', (table(survey_cutoffs[, 'phq15_cutoff'])[1]/nrow(psych)) * 100))
+print(sprintf('Somatic Symptoms diagnosis - medium diagnosis (phq15) = %f percent', (table(survey_cutoffs[, 'phq15_cutoff'])[3]/nrow(psych)) * 100))
+print(sprintf('Stress diagnosis - high diagnosis (pss) = %f percent', (table(survey_cutoffs[, 'pss_cutoff'])[1]/nrow(psych)) * 100))
+print(sprintf('Stress diagnosis - medium diagnosis (pss) = %f percent', (table(survey_cutoffs[, 'pss_cutoff'])[3]/nrow(psych)) * 100))
+print(sprintf('Social Anxiety diagnosis (sias) = %f percent', (sum(as.numeric(survey_cutoffs[, 'sias_cutoff']))/nrow(psych)) * 100))
+print(sprintf('Trait Anxiety diagnosis (stai p2) = %f percent', (sum(as.numeric(survey_cutoffs[, 'stai_trait_cutoff44']))/nrow(psych)) * 100))
+print(sprintf('Trait Anxiety diagnosis - High Anxiety (stai p2) = %f percent', (table(survey_cutoffs[, 'stai_trait_cutoff_cat'])[1]/nrow(psych)) * 100))
+print(sprintf('Trait Anxiety diagnosis - Moderate Anxiety (stai p2) = %f percent', (table(survey_cutoffs[, 'stai_trait_cutoff_cat'])[3]/nrow(psych)) * 100))
+print(sprintf(' diagnosis (who5) = %f percent', (sum(as.numeric(survey_cutoffs[, 'who_cutoff']))/nrow(psych)) * 100))
+
+
+```
+
+

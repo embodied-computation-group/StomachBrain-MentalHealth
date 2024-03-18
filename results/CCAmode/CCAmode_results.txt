@@ -1,0 +1,7 @@
+Brain (X) Weight Stability = 0.221
+Brain (X) Explained Variance (in-sample) = 0.714
+Behaviour (Y) Weight Stability = 0.328
+Behaviour (Y) Explained Variance (in-sample) = 33.733
+CCA in-sample Correlation = 0.866
+CCA out-of-sample Correlation = 0.323, p = 0.001
+Robustness of CCA model = 20 percent

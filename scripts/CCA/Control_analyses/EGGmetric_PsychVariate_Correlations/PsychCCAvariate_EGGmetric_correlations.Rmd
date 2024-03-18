@@ -1,0 +1,145 @@
+---
+title: "PsychCCAvariate_correlations"
+output: html_document
+date: "2023-07-11"
+---
+
+# clear slate & savepath
+```{r}
+# clean slate to be sure
+rm(list = ls())
+
+# check for pacman package and install if not found
+if (!require("pacman")) install.packages("pacman")
+  pacman::p_load(tidyverse, corrplot, ggcorrplot, dplyr, psych, ppcor, patchwork, cowplot, ggpubr, R.matlab)
+
+savepath = "~/Documents/StomachBrain/CCA/figures/gastricPLV_PsychScoresSubscales/Variate_correlations/" # 
+```
+
+# prepare functions for matching subject IDs and removing outliers
+```{r}
+
+# projections CCA mode 1 (1=StomachBrain variate, 2=PsychSubscales variate)
+CCA_path = "~/Documents/StomachBrain/CCA/data/CCAvariates/CCAvariate_Psych/CCAvariate_PsychScoresSubscales_CCA1.mat"
+CCAvariate1 <- readMat(CCA_path)$P
+
+# subIDs for CCA variate
+subIDs_CCA_path = '~/Documents/StomachBrain/CCA/data/CCA_input/subIDs_CCA_PsychScoresSubscales.mat' 
+subIDs_CCAvariate <- readMat(subIDs_CCA_path)$subIDs
+
+match_merge <- function(data1, data2, subIDs1, subIDs2, labels) {
+  reorder_idx <- match(subIDs1, subIDs2)
+  data2 <- data2[reorder_idx, ]
+  
+  # merge data - CCA mode 1
+  merged <- cbind(data1, data2)
+  colnames(merged) <- labels
+  return(merged)
+}
+
+remove_outliers <- function(input) {
+  # Histograms of vars
+  for (column_name in tail(colnames(input),-1)) {
+    hist(input[[column_name]], main = paste("Histogram of", column_name))
+  }
+  # Loop through columns and remove outliers (>3 SDs from mean)
+  input_RemOutliers <- input
+  for (column_name in tail(colnames(input_RemOutliers), -1)) {
+    input_RemOutliers[[column_name]][abs(input[[column_name]] - mean(input[[column_name]])) > 3 * sd(input[[column_name]])] <- NaN
+  }
+  # Histogram of vars (outliers removed)
+  for (column_name in tail(colnames(input_RemOutliers), -1)) {
+    hist(input_RemOutliers[[column_name]], main = paste("Histogram of", column_name,"outliers removed"))
+  }
+  # Remove subjects with NaN outliers
+  input_RemOutliers <- input_RemOutliers[complete.cases(input_RemOutliers), ]
+  return(input_RemOutliers)
+}
+
+```
+
+
+# Correlation matrix functions
+```{r}
+cormatrix_full <- function(cordata, title) {
+  pval_fdr <- psych::corr.test(cordata, method = "spearman", adjust = "fdr")$p
+  rval_fdr <- psych::corr.test(cordata, method = "spearman", adjust = "fdr")$r
+  cp1 <- ggcorrplot(rval_fdr, p.mat = pval_fdr, hc.order=FALSE,
+             type='full', insig='blank', method = "square", sig.level = 0.05, #circle?
+             outline.col = "black",
+            # lab = TRUE,
+             ggtheme = ggplot2::theme_minimal,
+             tl.cex = 8,
+             colors = c("#6D9EC1", "white", "#EA5F21FF")) +
+    geom_hline(yintercept = ncol(rval_fdr)+.5, linetype = 3, size = 1) +
+    geom_vline(xintercept = .5, linetype = 3, size = 1) +
+    geom_abline(intercept = 0, slope = 1, linetype = 3, size = 1) +
+    ggtitle(title)
+  
+  cp1 
+}
+
+cormatrix_selected <- function(cordata, xlabel, ylabel, xnum, ynum, savepath) {
+  # Correlation plots
+  cormatrix <- t(psych::corr.test(cordata, method = "spearman", adjust = "fdr")$r[1:xnum, (xnum+1):(xnum+ynum)]) #[(xnum+1):(xnum+ynum), 1:xnum]
+  cor_pvals <- t(psych::corr.test(cordata, method = "spearman", adjust = "fdr")$p[1:xnum, (xnum+1):(xnum+ynum)])#[(xnum+1):(xnum+ynum), 1:xnum]
+  
+  png(filename = savepath, res = 300, height = ((ynum*2)+2), width = 10, units = "cm")
+  # Plot the correlation matrix with significance markers
+  corrplot::corrplot(cormatrix,
+                     method = "color",
+                     addCoef.col = 'black',
+                     cl.pos = 'n',
+                     col.lim = c(min(cormatrix), max(cormatrix)),
+                     tl.col = "black",
+                     col = colorRampPalette(c("blue", "white", "red"))(100),
+                     p.mat = cor_pvals,
+                     sig.level = 0.05,
+                     insig="blank",
+                     mar = c(0, 0, 1.75, 0)
+                     )$corrPos -> p1
+  text(p1$x, p1$y, round(p1$corr, 2))
+  
+  # Draw a rectangle around the entire correlation matrix
+  rect(0.5, 0.5, ncol(cormatrix) + 0.5, nrow(cormatrix) + 0.5, border = "black", lwd = 2)
+  # Add x-axis label
+  mtext(side = 3, text = xlabel, line = 3, at = mean(par("usr")[1:2]), adj = 0.1, font = 2)
+  # Add y-axis label
+  mtext(side = 2, text = ylabel, line = 2.5, at = mean(par("usr")[3:4]), adj = 1, font = 2)
+  dev.off()
+}
+
+```
+
+
+# Correlation matrix: EGG metrics in normogastria & CCA variate (Psych subsclaes & StomachBrain coupling)
+```{r}
+# Select EGG with participant_id
+data_input = c("prop_power_norm", "peak_freq_norm", "max_power_norm") # 
+# Select EGG with participant_id
+EGG <- read_csv("/Users/au704655/Documents/EGG/Summary_data/EGGmeasures.csv") %>%  # "~/Documents/StomachBrain/CCA/data/EGG_MentalHealth_Intero_MindWand_Lifestyle.csv"
+  dplyr::select("SubID", data_input)
+# Remove subjects with NaN values
+EGG <- EGG[complete.cases(EGG), ]
+colnames(EGG) <- gsub("_", ".", colnames(EGG))
+data_input <- gsub("_", ".", data_input)
+
+corr_EGG <- match_merge(CCAvariate1,  EGG[ ,2:ncol(EGG)], subIDs_CCAvariate, EGG$SubID, c('BrainStomach.CCA', 'Psych.CCA', data_input))
+
+EGG_RemOutliers <- remove_outliers(EGG)
+
+corr_EGG_remoutliers <- match_merge(CCAvariate1, EGG_RemOutliers[ ,2:ncol(EGG_RemOutliers)], subIDs_CCAvariate, EGG_RemOutliers$SubID, c('BrainStomach.CCA', 'Psych.CCA', data_input))
+
+# full cor matrices
+cormatrix_full(corr_EGG, "EGG & Psych CCA mode correlations")
+cormatrix_full(corr_EGG_remoutliers, "EGG (-outliers) & Psych CCA mode correlations")
+
+pval_fdr_EGG <- psych::corr.test(corr_EGG, method = "spearman", adjust = "fdr")$p
+
+#cormatrix_selected(corr_EGG, "Psych CCA Mode", "EGG", 2, length(data_input), paste0(savepath, "corplot_Psychvariate_EGG.png"))
+#cormatrix_selected(corr_EGG_remoutliers, "Psych CCA Mode", "EGG", 2, length(data_input), paste0(savepath, "corplot_Psychvariate_EGG_remoutliers.png"))
+
+# EGG metric descriptives:
+#round(apply(corr_EGG, 2, sd), 3) #summary(corr_EGG)
+
+```

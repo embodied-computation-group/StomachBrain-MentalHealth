@@ -1,0 +1,209 @@
+Postcentral sulcus superior LH -0.0
+Intraparietal sulcus LH 0.0
+Anterior cingulate cortex middle -0.0
+Cerebellum IV 0.0
+Central opercular cortex 0.001
+Central sulcus inferior -0.001
+Thalamus middle -0.001
+Superior frontal sulcus RH 0.001
+Pons inferior -0.001
+Postcentral sulcus inferior -0.001
+Paracentral lobule posterior -0.001
+Anterior horizontal ramus lateral fissure RH 0.001
+Caudate anterior 0.001
+Inferior frontal gyrus LH -0.001
+Angular gyrus anterior LH 0.001
+Cerebellum VIIb -0.001
+Pars opercularis pars triangularis LH 0.001
+Middle temporal gyrus anterior LH 0.001
+Superior temporal sulcus RH 0.001
+Frontal pole lateral LH 0.001
+Thalamus medial -0.001
+Postcentral sulcus superior RH -0.001
+Cerebellum Crus I lateral RH 0.002
+Heschl’s gyrus -0.002
+Middle temporal gyrus anterior RH 0.002
+Parieto-occipital sulcus middle 0.002
+Parieto-occipital sulcus posterior 0.002
+Superior temporal gyrus LH 0.002
+Lateral occipital cortex inferior 0.002
+Precentral gyrus superior -0.002
+Anterior commissure -0.002
+Frontal operculum RH -0.002
+Intraparietal sulcus anterior -0.002
+Lateral occipital cortex LH -0.002
+Parieto-occipital sulcus mid-posterior 0.002
+Cerebellum Crus II -0.002
+Anterior cingulate cortex superior 0.003
+Inferior occipital sulcus -0.003
+Intraparietal sulcus superior RH -0.003
+Cerebellum V 0.003
+Inferior frontal sulcus posterior LH -0.003
+Insula anterior -0.003
+Frontal pole lateral RH -0.003
+Posterior cingulate cortex posterior 0.003
+Occipitotemporal sulcus posterior RH 0.003
+Putamen superior -0.003
+Superior parts of central and postcentral sulci LH 0.003
+Middle frontal gyrus anterior LH -0.003
+Suborbital cortex 0.003
+Cerebellum Crus II -0.003
+Cerebellum VI anterior -0.003
+Superior parietal lobule anterior -0.003
+Lingual gyrus mid-posterior -0.003
+Temporal pole -0.003
+Cerebellum VIIIb anterior 0.003
+Insula posterior inferior -0.003
+Superior frontal gyrus anterior 0.003
+Occipital pole inferior 0.003
+Caudate superior -0.003
+Hippocampal fissure 0.003
+Posterior cingulate cortex superior 0.003
+Ventromedial prefrontal cortex 0.004
+Angular gyrus inferior RH 0.004
+Frontal pole superior -0.004
+Thalamus superior 0.004
+Caudate inferior -0.004
+Inferior temporal gyrus posterior LH 0.004
+Central sulcus middle 0.004
+Cingulate sulcus posterior -0.004
+Parietal operculum -0.004
+Lingual gyrus medial 0.004
+Inferior frontal gyrus anterior LH -0.004
+Insula 0.004
+Dorsomedial prefrontal cortex -0.004
+Medial frontal cortex posterior -0.004
+Supramarginal gyrus -0.004
+Cerebellum V 0.004
+Hippocampus posterior 0.004
+Cerebellum Crus I posterior 0.004
+Dorsomedial prefrontal cortex posterior 0.005
+Cuneus anterior -0.005
+Cuneus inferior -0.005
+Retrocalcarine cortex -0.005
+Cerebellum Crus I RH -0.005
+Precentral sulcus inferior RH -0.005
+Superior frontal sulcus LH -0.005
+Inferior frontal sulcus anterior RH -0.005
+Posterior cingulate 0.005
+Inferior occipital gyrus -0.005
+Thalamus lateral -0.005
+Angular gyrus posterior RH 0.005
+Cerebellum VI RH 0.005
+Angular gyrus posterior LH 0.005
+Cerebellum VI superior -0.005
+Superior temporal gyrus medial -0.005
+Postcentral gyrus LH -0.005
+Calcarine sulcus posterior -0.005
+Thalamus inferior 0.005
+Cerebellum IX -0.005
+Pons superior 0.005
+Parieto-occipital sulcus mid-anterior 0.005
+Superior frontal gyrus posterior -0.005
+Lateral occipital cortex -0.006
+Middle frontal gyrus middle RH 0.006
+Insula antero-superior 0.006
+Superior temporal gyrus anterior 0.006
+Superior occipital sulcus inferior -0.006
+Fusiform gyrus RH -0.006
+Angular gyrus superior -0.006
+Calcarine sulcus mid-anterior -0.006
+Central and postcentral sulci mid-superior -0.006
+Cingulate cortex mid-anterior -0.006
+Parietal operculum LH 0.006
+Occipitotemporal gyrus anterior -0.006
+Planum temporale RH 0.006
+Postcentral sulcus middle RH 0.007
+Central and postcentral sulci superior -0.007
+Calcarine sulcus anterior -0.007
+Precentral sulcus superior -0.007
+Precuneus superior -0.007
+Lateral occipital cortex superior 0.007
+Cerebellum Crus I posterior LH -0.007
+Cerebellum VIIb -0.007
+Fusiform gyrus LH 0.007
+Thalamic radiation mid-posterior -0.007
+Central sulcus superior RH -0.008
+Precentral sulcus RH 0.008
+Superior occipital sulcus LH -0.008
+Hippocampus anterior 0.008
+Angular gyrus superior RH 0.008
+Putamen and globus pallidus 0.008
+Cerebellum VI anterior 0.008
+Superior frontal gyrus posterior RH -0.008
+Cerebellum Crus I anterior LH -0.008
+Collateral sulcus anterior 0.008
+Ventromedial prefrontal cortex anterior 0.008
+Frontal operculum LH 0.008
+Intraparietal sulcus inferior RH 0.008
+Inferior occipital gyrus posterior -0.008
+Frontal pole inferior -0.008
+Putamen anterior 0.008
+Superior occipital gyrus RH 0.009
+Lingual gyrus middle 0.009
+Intraparietal sulcus posterior LH -0.009
+Supramarginal gyrus LH 0.009
+Pars orbitalis RH 0.009
+Intraparietal sulcus posterior RH 0.009
+Lingual gyrus anterior 0.009
+Parieto-occipital sulcus anterior -0.009
+Transverse occipital sulcus 0.009
+Superior parietal lobule posterior -0.009
+Anterior cingulate cortex inferior -0.009
+Occipital pole middle 0.009
+Supramarginal gyrus anterior RH 0.009
+Occipital pole superior 0.009
+Superior frontal gyrus posterior LH -0.01
+Planum temporale LH -0.01
+Pericallosal sulcus middle -0.01
+Inferior temporal sulcus posterior LH 0.01
+Lateral occipital cortex anterior 0.01
+Paracentral lobule -0.01
+Cerebellum VI -0.01
+Superior temporal sulcus posterior LH -0.01
+Middle temporal gyrus middle RH 0.01
+Middle frontal gyrus anterior 0.01
+Lingual gyrus lateral 0.01
+Callosomarginal sulcus inferior -0.01
+Amygdala 0.011
+Angular gyrus inferior LH -0.011
+Precuneus posterior 0.011
+Paracingulate gyrus posterior -0.011
+Collateral sulcus middle 0.011
+Posterior cingulate cortex middle -0.011
+Supramarginal gyrus RH -0.011
+Cerebellum VI superior LH 0.011
+Precentral gyrus middle 0.011
+Paracingulate gyrus anterior 0.011
+Putamen inferior 0.012
+Cuneus posterior 0.012
+Superior frontal gyrus medial mid-posterior 0.012
+Lingual gyrus mid-anterior 0.012
+Cerebellum Crus I superior 0.012
+Fusiform gyrus posterior LH -0.012
+Cerebellum VIIIb posterior -0.012
+Angular gyrus RH -0.013
+Angular sulcus inferior RH 0.013
+Precentral sulcus superior LH 0.013
+Middle temporal gyrus posterior -0.013
+Superior parietal lobule middle -0.013
+Lateral fissure anterior -0.013
+Middle frontal gyrus posterior LH 0.013
+Dorsomedial prefrontal cortex anterior 0.013
+Inferior frontal sulcus anterior LH 0.013
+Supramarginal gyrus anterior LH 0.014
+Middle frontal gyrus posterior RH -0.014
+Superior occipital sulcus RH -0.015
+Middle frontal gyrus anterior RH 0.015
+Precuneus inferior 0.015
+Superior frontal sulcus anterior RH -0.016
+Cuneus superior 0.016
+Inferior frontal sulcus posterior RH 0.016
+Parietal operculum RH -0.016
+Posterior cingulate cortex inferior -0.018
+Precuneus anterior 0.02
+Pars opercularis 0.021
+Precentral sulcus inferior LH -0.022
+Cingulate cortex mid-posterior -0.022
+Angular gyrus superior LH -0.026
+Intermediate primus of Jensen RH -0.03

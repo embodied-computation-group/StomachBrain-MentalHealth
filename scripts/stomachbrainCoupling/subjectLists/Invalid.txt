@@ -1,0 +1,9 @@
+# Invalid
+invalid_mriqc_rest = ["sub-0019", "sub-0034", "sub-0039", "sub-0132", "sub-0138", "sub-0180", "sub-0229", "sub-0397", "sub-0419", "sub-0437", "sub-0587", "sub-0351", "sub-0388", "sub-0454", "sub-0485", "sub-0173", "sub-0207", "sub-0036", "sub-0223", "sub-0187", "sub-0237", "sub-0273", "sub-0287"]
+# DETAILS OF EXCLUSION:
+# framewise displacement >0.25: "sub-0019", "sub-0034", "sub-0039", "sub-0132", "sub-0138", "sub-0180", "sub-0229", "sub-0397", "sub-0419", "sub-0437", "sub-0587"
+# ringing/high tSNR: "sub-0351", "sub-0388", "sub-0454", "sub-0485"
+# front of brain cut off: "sub-0173", "sub-0207"
+# brain abnormality: "sub-0036", "sub-0223"
+# short recording (less than 7 mins): "sub-0187", "sub-0237", "sub-0273", "sub-0287"
+# percent scrubbed > 80 : sub-0180
