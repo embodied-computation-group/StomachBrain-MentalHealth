@@ -1,0 +1,151 @@
+---
+title: "UnivariateControl"
+output: html_document
+date: "2024-05-01"
+---
+
+# Load psych data (cca input)
+```{r}
+rm(list = ls())
+library(circlize)
+library(R.matlab)
+library(dplyr)
+library(stringr)
+
+filepath = '~/Git/StomachBrain-MentalHealth/data/CCAinput/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat' 
+data<- readMat(filepath)
+data$y <- data$Y.nooutliers # select psych scores only
+data <- data[c('y')]
+
+data$factor <- c('Autism', 'ADHD.A', 'ADHD.B', 'Empathy.Fantasy', 'Empathy.Concern', 'Empathy.Perspective', 'Empathy.Distress', 'Insomnia', 'Intero.Notice', 'Intero.Not.Distract', 'Intero.Not.Worry', 'Intero.Attention.Regulation', 'Intero.Emotion.Aware', 'Intero.Self.Regulate', 'Intero.Body.Listen', 'Intero.Trusting' , 'Depression.B', 'Physical.Fatigue', 'General.Fatigue', 'Reduced.Active', 'Reduced.Motivation', 'Mental.Fatigue', 'Support.Sig.Other', 'Support.Family', 'Support.Friend', 'Depression.A', 'Somatic.Symptoms', 'Stress', 'Social.Anxiety', 'Anxiety.Trait', 'Well-Being', 'Ment.Well-Being', 'Quality.Life.General', 'Quality.Life.Physical', 'Quality.Life.Psychological', 'Quality.Life.Social', 'Quality.Life.Environment')
+
+```
+
+```{r}
+library(ggplot2) 
+library(dplyr)
+
+# Perform PCA
+
+pca_result <- princomp(data$y, cor = TRUE)
+summary(pca_result)
+
+variance_explained <- pca_result$sdev^2
+total_variance <- sum(variance_explained)
+proportion_variance_explained <- variance_explained / total_variance
+
+# CCA Psych Explained Variance (in-sample) = 33.733
+# PCA1 Prop Variance = 30.992
+
+# Extracting Loadings
+loadings_df <- data.frame(
+  Loadings_PC1 = pca_result$loadings[,1], #rotation
+  Variable = data$factor
+) 
+
+# sort lowest to highest
+loadings_df_reorder <- loadings_df %>%
+  arrange(Loadings_PC1) %>%
+  mutate(Variable = factor(Variable, levels = Variable))  # Re-factor with new order
+
+# Plot loadings of PCA1
+ggplot(loadings_df_reorder, aes(x=Variable, y=Loadings_PC1)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() +
+  coord_flip() + # Flip coordinates for horizontal bars
+  xlab("") + ylab("Loadings") +
+  ggtitle("Loadings of the First Principal Component")
+
+# Extracting Individual Subject Scores
+scores_PCA1 <- pca_result$scores[ ,1] #x
+
+# Compare CCA with PCA
+CCA_psychloadings <- readMat('~/Git/StomachBrain-MentalHealth/results/CCAloadings/psychloadings_PsychScoresSubscales_CCA1.mat')$weightY
+CCA_variate <- readMat('~/Git/StomachBrain-MentalHealth/results/CCAvariate/CCAvariate_StomachBrain_PsychScoresSubscales_CCA1.mat')$P
+
+# CCA/PCA loadings
+cor.test(CCA_psychloadings, loadings_df$Loadings_PC1)
+png("~/Git/StomachBrain-MentalHealth/figures/methods/univariate_control/PsychPCA_PsychCCA_corr.png", width = 350, height = 300) 
+plot(CCA_psychloadings, loadings_df$Loadings_PC1, xlab="CCA Psych Loading", ylab="PCA Psych Loading", pch=19, col="blue")
+dev.off()
+
+
+# CCA variate & PCA subject scores
+cor.test(CCA_variate[ ,2], scores_PCA1) # 2nd col psych variate
+plot(CCA_variate[ ,2], scores_PCA1, xlab="CCA psych variate", ylab="PCA psych scores", pch=19, col="blue")
+
+```
+
+
+```{r}
+filepath = '~/Git/StomachBrain-MentalHealth/data/CCAinput/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat'
+data<- readMat(filepath)
+data$x <- data$X.nooutliers # select stomach-brain strength in difumo parcellation
+data <- data[c('x')]
+
+
+# Perform PCA stomach brain
+pca_result <- prcomp(data$x, center = TRUE, scale. = TRUE)
+summary(pca_result)
+
+variance_explained <- pca_result$sdev^2
+total_variance <- sum(variance_explained)
+proportion_variance_explained <- variance_explained / total_variance
+
+# CCA Stomach-Brain Explained Variance (in-sample) = 71%
+# PCA1 Prop Variance = 57%
+
+# Extracting Loadings
+loadings_df <- data.frame(
+  Loadings_PC1 = pca_result$rotation[,1],
+  Variable = 1:length(pca_result$rotation[,1])
+)
+
+# sort lowest to highest
+loadings_df_reorder <- loadings_df %>%
+  arrange(Loadings_PC1) %>%
+  mutate(Variable = factor(Variable, levels = Variable))  # Re-factor with new order
+
+# Plot loadings of PCA1
+ggplot(loadings_df_reorder, aes(x=Variable, y=Loadings_PC1)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() +
+  coord_flip() + # Flip coordinates for horizontal bars
+  xlab("") + ylab("Loadings") +
+  ggtitle("Loadings of the First Principal Component")
+
+# Extracting Individual Subject Scores
+scores_PCA1 <- pca_result$x[ ,1] #
+
+# Compare CCA with PCA
+CCA_SBloadings <- readMat('~/Git/StomachBrain-MentalHealth/results/CCAloadings/stomachbrainloadings_PsychScoresSubscales_CCA1.mat')$weightX
+CCA_variate <- readMat('~/Git/StomachBrain-MentalHealth/results/CCAvariate/CCAvariate_StomachBrain_PsychScoresSubscales_CCA1.mat')$P
+
+# CCA/PCA loadings
+cor(CCA_SBloadings, loadings_df$Loadings_PC1)
+plot(CCA_SBloadings, loadings_df$Loadings_PC1, xlab="CCA SB loading", ylab="PCA SB loading", pch=19, col="blue")
+
+# CCA variate & PCA subject scores
+cor(CCA_variate[ ,1], scores_PCA1) # 1st col stomach-brain variate
+plot(CCA_variate[ ,1], scores_PCA1, xlab="CCA SB variate", ylab="PCA SB scores", pch=19, col="blue")
+
+
+```
+
+```{r}
+corrResults <- readMat('~/Git/StomachBrain-MentalHealth/scripts/CCA/Control_analyses/UnivariateControl/PCApsych_corr_PLVDiFuMo.mat') # correlations of psych 1st PCA component with stomach-brain coupling strength from each DiFuMo region separately
+DiFuMo_labels <- read.csv('~/Git/StomachBrain-MentalHealth/data/control_neuro_data/DifumoLabels_regionsremoved.csv', header = FALSE)
+
+round(corrResults$pp[corrResults$pp < 0.05], 3)
+round(corrResults$rr[corrResults$pp < 0.05], 3)
+DiFuMo_labels$V2[corrResults$pp < 0.05]
+
+sep_corr <- cor.test(t(corrResults$rr), CCA_SBloadings)
+png("~/Git/StomachBrain-MentalHealth/figures/methods/univariate_control/UnivariateCoeffs_SBCCA_corr.png", width = 350, height = 300) 
+plot(CCA_SBloadings, t(corrResults$rr), xlab="Multivariate Stomach-Brain CCA Loadings", ylab="Univariate Correlation Coefficients", pch=19, col="blue")
+dev.off()
+
+#corrResults$pp_fdr <- p.adjust(corrResults$pp, method = "fdr")
+#corrResults$pp_fdr[corrResults$pp_fdr < 0.05]
+
+```

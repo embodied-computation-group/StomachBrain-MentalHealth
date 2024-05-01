@@ -11,7 +11,7 @@ library(R.matlab)
 library(dplyr)
 library(stringr)
 
-filepath = '~/Documents/StomachBrain/CCA/data/CCA_input/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat'
+filepath = '~/Git/StomachBrain-MentalHealth/data/CCAinput/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat'  #'~/Documents/StomachBrain/CCA/data/CCA_input/cca_inputs_difumo256_gastricPLV_PsychScoresSubscales.mat'
 data<- readMat(filepath)
 data$y <- data$Y.nooutliers # select psych scores only
 data <- data[c('y')]
@@ -178,8 +178,9 @@ ggsave(
 ```{r}
 
 # load grand summary score tsv
-psych <- read.table('~/Documents/StomachBrain/CCA/data/grand_surveyscores_summary.tsv', header = TRUE, sep = "\t")
-subIDs = readMat('~/Documents/StomachBrain/CCA/data/CCA_input/subIDs_CCA_PsychScoresSubscales.mat')$subIDs
+psych <- read.table('~/Git/StomachBrain-MentalHealth/data/psych_scores/grand_surveyscores_summary.tsv', header = TRUE, sep = "\t") #~/Documents/StomachBrain/CCA/data/grand_surveyscores_summary.tsv', header = TRUE, sep = "\t")
+subIDs = readMat('~/Git/StomachBrain-MentalHealth/data/CCAinput/ControlCCAs/subIDs_CCA_PsychScoresSubscales.mat')$subIDs
+  #'~/Documents/StomachBrain/CCA/data/CCA_input/subIDs_CCA_PsychScoresSubscales.mat')$subIDs
 
 # select subjects in CCA
 psych <- psych %>% filter(as.numeric(str_sub(participant_id, -4)) %in% subIDs[, 1])
@@ -209,5 +210,6 @@ print(sprintf(' diagnosis (who5) = %f percent', (sum(as.numeric(survey_cutoffs[,
 
 
 ```
+
 
 
