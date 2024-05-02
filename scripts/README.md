@@ -22,8 +22,10 @@ Note: data & scripts for raw/preprocessed fMRI, raw physio, and raw survey indiv
 4. Create matched input matrices for CCA (X = stomach-brain coupling, Y = psych data, C = confounds. Outliers removed & participant rows across matrices matched):  
     StomachBrain-MentalHealth/scripts/CCA/CCAprepAllData.m
 
-5. X.mat, Y.mat & C.mat from (4.) saved in: 'StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/_Project_StomachBrain/data', and framework folder created:  
-    '/home/leah/Git/StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/_Project_StomachBrain/framework'
+5. X.mat, Y.mat & C.mat from (4.) saved in:  
+    'StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/_Project_StomachBrain/data', 
+and framework folder created:  
+    '/home/leah/Git/StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/_Project_StomachBrain/framework'  
 
 6. Run CCA with CCA/PLS toolkit (run on cluster via StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/cca_jobs_slurm.sh):  
     StomachBrain-MentalHealth/scripts/CCA/cca_pls_toolkit-master/RunCCA.m
