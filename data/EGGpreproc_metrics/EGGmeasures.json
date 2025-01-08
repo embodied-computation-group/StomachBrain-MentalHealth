@@ -1,0 +1,87 @@
+{
+    "EGGmeasures_Metadata": {
+        "Description": "gastric metrics computed from electrogastrography recording in Visceral Mind Project"
+    }, 
+    "SubID": {
+        "Description": "id numerical",
+        "Units": "participant_id in numerical form"
+    },
+    "nChannels": {
+        "Description": " number of recording EGG channels",
+        "Units": "count"
+    },
+    "BestChannel": {
+        "Description": "manually selected best EGG channel",
+        "Units": "index"
+    },
+    "PeakFreq": {
+        "Description": "peak frequency in normogastria range [0.033 0.067]",
+        "Units": "Hz"
+    },
+    "ConfBestChan": {
+        "Description": "confidence of best channel selection",
+        "Units": "rating"
+    },
+    "ratings": {
+        "Description": "channel quality rating",
+        "Units": "rating"
+    },
+    "notes": {
+        "Description": "notes of rejection or details of channel",
+        "Units": "notes"
+    },
+    "cohort": {
+        "Description": "which data collection cohort",
+        "Levels": {
+            "1": "first data collection cohort",
+            "2": "second data collection cohort"
+        }
+    },
+    "peak_freq_norm": {
+        "Description": "peak frequency in normogastria range [0.033 0.067]",
+        "Units": "Hz"
+    },
+    "max_power_norm": {
+        "Description": "max power in normogastria range",
+        "Units": "μV2"
+    },
+    "mean_power_norm": {
+        "Description": "mean power in the normogastria range",
+        "Units": "ms"
+    },
+    "prop_power_norm": {
+        "Description": "proportion of power in normogastria range with respect to power in all gastric ranges = sum(power_normrange)/sum(power_allgastriarange)",
+        "Units": "%"
+    },
+    "mean_power_ratio_norm": {
+        "Description": "mean power ratio in normogastria range = mean(power_normrange)/(mean(power_bradyrange)+mean(power_normrange)+mean(power_tachyrange))",
+        "Units": "ratio"
+    },
+    "SD_cycle_dur_norm": {
+        "Description": "standard deviation of cycle durations in normogastria (2-4 cpm = 15-30 seconds = 0.03-0.07 Hz)",
+        "Units": "normalized units"
+    },
+    "prop_norm_cycles": {
+        "Description": "proportion of cycle lengths that are normogastric",
+        "Units": "%"
+    },
+    "mean_cycle_dur_norm": {
+        "Description": "mean gastric cycle duration after filtering EGG data around the peak normogastria frequency",
+        "Units": "s"
+    },
+    "limits_3std_norm_1": {
+        "Description": "lower limit of 3 standard deviations from mean_cycle_dur_norm",
+        "Units": "s"
+    },
+    "limits_3std_norm_2": {
+        "Description": "lower limit of 3 standard deviations from mean_cycle_dur_norm",
+        "Units": "s"
+    }
+}
+
+
+
+
+
+
+
