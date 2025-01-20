@@ -6,7 +6,7 @@ Visceral rhythms orchestrate the physiological states underlying human emotion. 
 ## Summary of Repository
 
 This repository contains:
-- data (EGG, control neurological, stomach-brain coupling, (mental health data upon reasonable request))
+- data (EGG, control neurological, stomach-brain coupling, (mental health data available upon reasonable request and formation of a data handling agreement))
 - figures (CCA input and results figures, methods figures, and final figures for manuscript)
 - results (details of results from CCA analysis)
 - scripts (ReadMe.md in this folder details order of scripts to run)
