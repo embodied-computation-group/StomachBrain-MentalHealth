@@ -140,6 +140,10 @@ round(corrResults$pp[corrResults$pp < 0.05], 3)
 round(corrResults$rr[corrResults$pp < 0.05], 3)
 DiFuMo_labels$V2[corrResults$pp < 0.05]
 
+# explained variance
+round(corrResults$rr[corrResults$pp < 0.05]^2, 3) # r squared
+round(mean((corrResults$rr[corrResults$pp < 0.05]^2)), 3) # average explained variance of sig correlations
+
 sep_corr <- cor.test(t(corrResults$rr), CCA_SBloadings)
 png("~/Git/StomachBrain-MentalHealth/figures/methods/univariate_control/UnivariateCoeffs_SBCCA_corr.png", width = 350, height = 300) 
 plot(CCA_SBloadings, t(corrResults$rr), xlab="Multivariate Stomach-Brain CCA Loadings", ylab="Univariate Correlation Coefficients", pch=19, col="blue")
