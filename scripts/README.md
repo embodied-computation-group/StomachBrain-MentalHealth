@@ -61,7 +61,34 @@ Note: data & scripts for preprocessed standard deviation of BOLD, and resting co
 15. Univariate control analysis of PCA of psych scores with stomach-brain coupling strength per DiFuMo region separately:  
     StomachBrain-MentalHealth/scripts/CCA/Control_analyses/UnivariateControl/UnivariateControl.Rmd
 
+16. Heart-Brain control CCA with mental health (brain maps of instantaneous high and low frequency hrv)
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/saveIBIs.py
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/Compute_InstHRV.m
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/MakeRegressorsSPM.m
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/spm/HeartBrain_spm_wrapper.m (or batch_HeartBrain.sh)
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/CCAprepHeartBrain.ipynb
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/HeartBrain/CCAprepAllData_HeartBrain.m
+    Repeat 5-6 but with results from (16.).  
+
+17. Resp-Brain control CCA with mental health (brain maps of instantaneous resp rate variability)
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/breath_durations_rest.ipynb
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/Compute_InstRespRV.m
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/MakeRegressorsSPM.m
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/spm/RespBrain_spm_wrapper.m
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/CCAprepRespBrain.ipynb
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/RespBrain/CCAprepAllData_RespBrain.m
+    Repeat 5-6 but with results from (17.). 
+
+18. Check no CCA difference between EGG recording montage/electrode
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/CheckEGGMontage.m
+
+19. Gender and Age CCA variate control analyses
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/GenderAgeControls/GenderAge_CCAcontrols.m
+
+20. Results of control CCAs (no somatic-symptoms (phq15), somatic-symptoms only, gastrointestinal symptoms only, psych outliers in, cardiac-brain, resp-brain) in:
+    StomachBrain-MentalHealth/scripts/CCA/Control_analyses/ControlCCAs/results
+
 --------------------------------------------------------------------------------------------------------
 
-16. Extra psych plots & diagnosis cutoff percentages script:  
+21. Extra psych plots & diagnosis cutoff percentages script:  
     StomachBrain-MentalHealth/scripts/psych_data/psych_inputplots_andcutoffs.Rmd
