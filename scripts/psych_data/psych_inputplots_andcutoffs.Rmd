@@ -222,6 +222,8 @@ subIDs = readMat('~/Git/StomachBrain-MentalHealth/data/CCAinput/ControlCCAs/subI
 # select subjects in CCA 
 demograph <- demograph %>% filter(as.numeric(str_sub(participant_id, -4)) %in% subIDs[, 1])
 
+
+# Plot with histogram + rug
 plotage <- ggplot(demograph, aes(x = age)) +
   geom_histogram(
     binwidth = 1,                  # Adjust bin width
@@ -229,6 +231,8 @@ plotage <- ggplot(demograph, aes(x = age)) +
     color = "white",                  # Border color
     alpha = 0.7                       # Transparency
   ) +
+  geom_jitter(aes(y = 0), width = 0.3, height = 0, alpha = 0.2, shape = '|', size = 4, color = "skyblue4") +
+  #geom_rug(sides = "b", alpha = 0.2, linewidth = 1) +  # rug plot at bottom 
   labs(
     #title = " Distribution of Age",    # Title
     x = "Age (Years)",                      # X-axis label
@@ -269,7 +273,8 @@ plotgender <- ggplot(demograph, aes(x = gender)) +
 
 # Arrange the plots side by side
 combined_plot <- grid.arrange(plotage, plotgender, ncol = 2, widths = c(2.25, 1))
-ggsave("~/Git/StomachBrain-MentalHealth/figures/methods/demograph/age_gender_distr.png", combined_plot, width = 12, height = 6)
+ggsave("~/Git/StomachBrain-MentalHealth/figures/methods/demograph/age_gender_distr_rug.png", combined_plot, width = 12, height = 6)
+
 
 ```
 
