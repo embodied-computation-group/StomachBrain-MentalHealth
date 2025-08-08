@@ -13,7 +13,7 @@ This repository contains:
 
 ## Paper & Preprint:
 
-Lint to [NatureMentalHealth] (https://www.nature.com/articles/s44220-025-00468-6)
+Lint to [NatureMentalHealth](https://https://www.nature.com/articles/s44220-025-00468-6)
 Link to [preprint](https://www.biorxiv.org/content/10.1101/2024.06.05.597517v3)
 
 Cite as:
