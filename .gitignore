@@ -5,3 +5,6 @@
 data/CCAinput/
 data/demographics/
 data/psych_scores/
+
+scripts/stomachbrainCoupling/StomachBrain_2021/STOMACH_BRAIN/timeseries_preprocessBOLD_3mm.m
+scripts/stomachbrainCoupling/StomachBrain_2021/STOMACH_BRAIN/timeseries_preprocessBOLD_controlBOLDSTD.m
